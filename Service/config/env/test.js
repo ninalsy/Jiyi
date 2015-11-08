@@ -4,7 +4,9 @@
  */
 
 module.exports = {
-  db: 'mongodb://localhost/your_project_test',
+  db: 'mongodb://localhost:27017/jiyi_test',
+  dbPath: './data/db/',
+  dbLogPath: './data/logs/mongod.log',
   facebook: {
     clientID: 'APP_ID',
     clientSecret: 'SECRET',
