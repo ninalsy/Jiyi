@@ -14,7 +14,7 @@ exports.Person = function() {
     };
 };
 
-exports.Loc = function() {
+exports.Location = function() {
 	return {
 		type: {
 			type: String
