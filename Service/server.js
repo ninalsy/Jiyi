@@ -125,10 +125,34 @@ var createTestPhotos = function(cb) {
 		}
 	}];
 
+	console.log('Creating dummy photos...');
+
 	fakePhotoData.forEach(function(item) {
 		var photo = new Photo(item);
-		photo.uploadAndSave('testImage');
+		console.log('Photo: %s', photo);
+		photo.uploadAndSave('testImage', function(err, res) {
+			if (err) {
+				console.log('Unable to save photos. Error:', err);
+			} else {
+				console.log('Save suceeded. Result: %s', res);
+			}
+		});
+		// Photo.create(item);
 	});
 }
 
-createTestPhotos()
+var testQuery = function() {
+	var locationCriteria = new SchemaBase.Location();
+	var options = {
+
+	}
+	Photo.findCloseBy(locationCriteria, options, function(err, res) {
+		if (err) {
+			console.log('Unable to search photos. Error:', err);
+		} else {
+			console.log('Search suceeded. Result: %s', res);
+		}
+	});
+}
+
+createTestPhotos(testQuery)

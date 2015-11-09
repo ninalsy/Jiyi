@@ -75,18 +75,23 @@ photoSchema.pre('remove', function(next) {
 photoSchema.methods = {
 	uploadAndSave: function(image, cb) {
 		if (!image) {
-			return new Error('Image cannot be null');
+			var err = new Error('Image cannot be null');
+			cb(err);
 		}
 
 		if (!this.loc || !this.loc.coordinates || this.loc.coordinates.length != 2) {
-			return new Error('Photo must has a valid location');
+			var err = new Error('Photo must has a valid location');
+			cb(err);
 		}
 
 		// var imager = new Imager(imagerConfig, 'S3');
 		var self = this;
 
 		this.validate(function(err) {
-			if (err) return cb(err);
+			if (err) {
+				console.log('Validation failed. Error:', err);
+				return cb(err)
+			};
 			// imager.upload(images, function(err, cdnUri, files) {
 			// 	if (err) return cb(err);
 			// 	if (files.length) {
