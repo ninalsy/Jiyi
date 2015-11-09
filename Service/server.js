@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var config = require('config');
 var embeddedMongoDB = require('node-embedded-mongodb')
+var queryBase = require('queryBase');
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -95,17 +96,17 @@ console.log('Express app started on port ' + port);
 
 // Create photographers
 
+var Photo = mongoose.model('Photo');
+
 // Create photos
 var createTestPhotos = function(cb) {
-	var Photo = mongoose.model('Photo');
-
 	var fakePhotoData = [{
 		photographer: '',
 		customer: '',
 		tags: ['Portrait'],
 		loc: {
 			type: 'Points',
-			coordinate: [0, 0]
+			coordinates: [0, 0]
 		},
 		imageLink: {
 			thumbnailLink: '',
@@ -117,7 +118,7 @@ var createTestPhotos = function(cb) {
 		tags: ['Family'],
 		loc: {
 			type: 'Points',
-			coordinate: [1, 1]
+			coordinates: [1, 1]
 		},
 		imageLink: {
 			thumbnailLink: '',
@@ -137,16 +138,17 @@ var createTestPhotos = function(cb) {
 				console.log('Save suceeded. Result: %s', res);
 			}
 		});
-		// Photo.create(item);
 	});
 }
 
 var testQuery = function() {
-	var locationCriteria = new SchemaBase.Location();
+	var locationCriteria = queryBase.RequestLocation([1, 2], 1000000, 0);
 	var options = {
 
 	}
+	console.log('Running test query...');
 	Photo.findCloseBy(locationCriteria, options, function(err, res) {
+		console.log('ssss');
 		if (err) {
 			console.log('Unable to search photos. Error:', err);
 		} else {
@@ -155,4 +157,5 @@ var testQuery = function() {
 	});
 }
 
-createTestPhotos(testQuery)
+createTestPhotos();
+testQuery();

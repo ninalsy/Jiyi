@@ -9,14 +9,14 @@ var ImageLinkSubSchema = {
 var Schema = mongoose.Schema;
 
 var photoSchema = new Schema({
-	photographer: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Photographer'
-	},
-	customer: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Customer'
-	},
+	// photographer: {
+	// 	type: mongoose.Schema.Types.ObjectId,
+	// 	ref: 'Photographer'
+	// },
+	// customer: {
+	// 	type: mongoose.Schema.Types.ObjectId,
+	// 	ref: 'Customer'
+	// },
 	permission: {
 		type: String,
 		enum: ['Public', 'Private'],
@@ -40,9 +40,9 @@ photoSchema.index({
 });
 
 
-photoSchema.path('photographer').required(true, 'Photo must has a photographer');
+// photoSchema.path('photographer').required(true, 'Photo must has a photographer');
 
-photoSchema.path('customer').required(true, 'Photo must has a customer');
+// photoSchema.path('customer').required(true, 'Photo must has a customer');
 
 photoSchema.path('permission').required(true, 'Photo must has a permission');
 
@@ -90,8 +90,10 @@ photoSchema.methods = {
 		this.validate(function(err) {
 			if (err) {
 				console.log('Validation failed. Error:', err);
-				return cb(err)
+				cb(err)
 			};
+
+			console.log('Validation succeeded!');
 			// imager.upload(images, function(err, cdnUri, files) {
 			// 	if (err) return cb(err);
 			// 	if (files.length) {
