@@ -38,12 +38,11 @@ exports.Location = {
 	coordinates: []
 };
 
-exports.Address = function() {
-	return {
-		line1: String,
-		line2: String,
-		city: String,
-		province: String,
-		zip: String
-	};
+exports.Address = {
+
+	line1: String,
+	line2: String,
+	city: String,
+	province: String,
+	zip: String
 };

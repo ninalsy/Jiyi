@@ -5,6 +5,7 @@
 
 var mongoose = require('mongoose');
 var home = require('home');
+var go = require('go');
 
 /**
  * Expose
@@ -13,6 +14,7 @@ var home = require('home');
 module.exports = function (app, passport) {
 
   app.get('/', home.index);
+  app.get('/handle/go', go.index);
 
   /**
    * Error handling
