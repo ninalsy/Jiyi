@@ -35,9 +35,9 @@ var photoSchema = new Schema({
 	imageLink: ImageLinkSubSchema
 });
 
-photoSchema.index({
-	loc: '2dsphere'
-});
+// photoSchema.index({
+// 	loc: '2dsphere'
+// });
 
 
 // photoSchema.path('photographer').required(true, 'Photo must has a photographer');

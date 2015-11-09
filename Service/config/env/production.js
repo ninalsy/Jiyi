@@ -1,10 +1,9 @@
-
 /**
  * Expose
  */
 
 module.exports = {
-  db: 'mongodb://localhost:27017/jiyi_production',
+  db: 'mongodb://localhost/jiyi_production',
   facebook: {
     clientID: 'APP_ID',
     clientSecret: 'SECRET',

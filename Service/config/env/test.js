@@ -1,10 +1,9 @@
-
 /**
  * Expose
  */
 
 module.exports = {
-  db: 'mongodb://localhost:27017/jiyi_test',
+  db: 'mongodb://localhost/jiyi_test',
   dbPath: './data/db/',
   dbLogPath: './data/logs/mongod.log',
   facebook: {

@@ -18,11 +18,11 @@ var connect = function() {
 	var options = {
 		server: {
 			socketOptions: {
-				keepAlive: 0
+				keepAlive: 1
 			}
 		}
 	};
-	mongoose.connect(config.dbName, options);
+	mongoose.connect(config.db, options);
 };
 
 var initDB = function() {
@@ -65,9 +65,9 @@ process.once('SIGUSR2', function() {
 
 mongoose.connection.on('error', console.log);
 
-if (process.env.NODE_ENV === 'production') {
-	mongoose.connection.on('disconnected', connect);
-}
+// if (process.env.NODE_ENV === 'production') {
+mongoose.connection.on('disconnected', connect);
+// }
 
 // Bootstrap app models
 fs.readdirSync(__dirname + '/app/models').forEach(function(file) {
@@ -148,7 +148,6 @@ var testQuery = function() {
 	}
 	console.log('Running test query...');
 	Photo.findCloseBy(locationCriteria, options, function(err, res) {
-		console.log('ssss');
 		if (err) {
 			console.log('Unable to search photos. Error:', err);
 		} else {
