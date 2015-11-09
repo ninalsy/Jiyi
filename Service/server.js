@@ -39,7 +39,7 @@ var initDB = function() {
 	}
 }
 
-var cleanupDB = function(callback) {
+var cleanupDB = function(cb) {
 	if (process.env.NODE_ENV !== 'production') {
 		embeddedMongoDB.stop(function(err) {
 			if (err) {
@@ -47,14 +47,20 @@ var cleanupDB = function(callback) {
 			} else {
 				console.log('Mongo DB stopped!');
 			}
-			callback();
+			cb();
 		});
 	} else {
-		callback();
+		cb();
 	}
 }
 
 initDB();
+
+process.once('SIGUSR2', function() {
+	cleanupDB(function() {
+		process.kill(process.pid, 'SIGUSR2');
+	})
+});
 
 mongoose.connection.on('error', console.log);
 
@@ -62,9 +68,14 @@ if (process.env.NODE_ENV === 'production') {
 	mongoose.connection.on('disconnected', connect);
 }
 
-// Bootstrap models
+// Bootstrap app models
 fs.readdirSync(__dirname + '/app/models').forEach(function(file) {
 	if (~file.indexOf('.js')) require(__dirname + '/app/models/' + file);
+});
+
+// Bootstrap shared models
+fs.readdirSync(__dirname + '/shared/models').forEach(function(file) {
+	if (~file.indexOf('.js')) require(__dirname + '/shared/models/' + file);
 });
 
 // Bootstrap passport config
@@ -80,8 +91,44 @@ var server = app.listen(port);
 
 console.log('Express app started on port ' + port);
 
-process.once('SIGUSR2', function() {
-	cleanupDB(function() {
-		process.kill(process.pid, 'SIGUSR2');
-	})
-});
+// Testing code
+
+// Create photographers
+
+// Create photos
+var createTestPhotos = function(cb) {
+	var Photo = mongoose.model('Photo');
+
+	var fakePhotoData = [{
+		photographer: '',
+		customer: '',
+		tags: ['Portrait'],
+		loc: {
+			type: 'Points',
+			coordinate: [0, 0]
+		},
+		imageLink: {
+			thumbnailLink: '',
+			rawImageLink: '',
+		}
+	}, {
+		photographer: '',
+		customer: '',
+		tags: ['Family'],
+		loc: {
+			type: 'Points',
+			coordinate: [1, 1]
+		},
+		imageLink: {
+			thumbnailLink: '',
+			rawImageLink: '',
+		}
+	}];
+
+	fakePhotoData.forEach(function(item) {
+		var photo = new Photo(item);
+		photo.uploadAndSave('testImage');
+	});
+}
+
+createTestPhotos()
